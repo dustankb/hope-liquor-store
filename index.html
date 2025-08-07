@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hope Liquor | The Art of the Pour</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #1a1a1a; /* Softer than pure black */
+            --secondary-color: #c5b358; /* Muted, elegant gold */
+            --text-color: #333;
+            --light-text-color: #666;
+            --background-color: #FDFDFD; /* Slightly off-white */
+            --card-background: #fff;
+            --border-color: #eaeaea;
+        }
+
+        /* Preloader styling */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-left-color: var(--secondary-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-weight: 300;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+        
+        /* Scroll-triggered animation setup */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* === Header/Nav Styles === */
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 1.5rem;
+            color: #FFFFFF;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+        nav {
+            background-color: rgba(26, 26, 26, 0.9);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 0 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 1.25rem 1rem;
+            display: inline-block;
+            transition: color 0.3s, background-color 0.3s;
+        }
+        nav a:hover {
+            background-color: transparent;
+            color: var(--secondary-color);
+        }
+        .nav-content {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 75px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .header-contact {
+            display: flex;
+            gap: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .header-contact i {
+            color: var(--secondary-color);
+        }
+        @media (max-width: 1024px) {
+            .header-contact { display: none; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-content { justify-content: center; }
+        }
+        
+        /* Hero Section */
+        .hero {
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('images/image1.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 8rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 70vh;
+            background-attachment: fixed; 
+        }
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 900;
+            margin: 0;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+        .hero p {
+            font-size: 1.25rem;
+            font-weight: 300;
+            max-width: 600px;
+            margin-top: 1rem;
+        }
+        .cta-button {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s, color 0.3s, border-color 0.3s;
+            display: inline-block;
+            margin-top: 2rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* General Section Styling */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--light-text-color);
+            margin-top: -1rem;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Swiper Slider Styling */
+        .swiper {
+            width: 100%;
+            padding: 2rem 0;
+        }
+        .swiper-slide {
+            text-align: center;
+        }
+        .product {
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            overflow: hidden; 
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .product:hover .product-image img {
+            transform: scale(1.05);
+        }
+        .product-image {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+        }
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .product-info {
+            padding: 1.5rem;
+        }
+        .product-info h3 {
+            margin: 0 0 0.5rem 0;
+        }
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+        .swiper-button-next, .swiper-button-prev {
+            color: var(--primary-color);
+        }
+        .swiper-pagination-bullet-active {
+            background: var(--secondary-color);
+        }
+        
+        /* Interactive Tabs for Promotions */
+        .tabs-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .tab-button {
+            padding: 1rem 2rem;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1rem;
+            font-family: 'Lato', sans-serif;
+            font-weight: 700;
+            color: var(--light-text-color);
+            position: relative;
+            transition: color 0.3s;
+        }
+        .tab-button::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--secondary-color);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+        .tab-button.active {
+            color: var(--primary-color);
+        }
+        .tab-button.active::after {
+            transform: scaleX(1);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* --- NEW PROMOTIONS STYLES (from second file) --- */
+        .promo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+        .promo-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        .promo-image {
+            width: 96px;
+            height: 96px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0; /* Prevents image from shrinking */
+        }
+        .promo-item h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.25rem;
+        }
+        .promo-item p {
+            margin: 0 0 0.5rem 0;
+            color: var(--light-text-color);
+        }
+        .promo-item .validity {
+            font-weight: bold;
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+        @media (max-width: 768px) {
+            .promo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* --- NEW CONTACT FORM STYLES (from second file) --- */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2.5rem;
+            align-items: flex-start;
+        }
+        .contact-box {
+            background-color: var(--card-background);
+            padding: 2.5rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-color);
+        }
+        .store-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        .contact-info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .contact-info-item i {
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+            margin-top: 5px;
+        }
+        .contact-info-item h4 {
+            margin: 0 0 0.25rem 0;
+        }
+        .contact-info-item p {
+            margin: 0;
+            color: var(--light-text-color);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            transition: box-shadow 0.3s, border-color 0.3s;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 2px rgba(197, 179, 88, 0.3);
+        }
+        @media (max-width: 992px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        /* Age Gate Styles */
+        .age-gate-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        .age-gate-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .age-gate-box {
+            background-color: var(--card-background);
+            padding: 3rem;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+        }
+        .age-gate-box h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .age-gate-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .cta-button.secondary {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--border-color);
+        }
+        .cta-button.secondary:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: var(--primary-color);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 3rem 2rem;
+            margin-top: 3rem;
+            text-align: center;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .footer-social {
+            display: flex;
+            gap: 2rem;
+        }
+        .footer-social a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+        .footer-social a:hover {
+            color: var(--secondary-color);
+        }
+        .footer-copyright {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="preloader">
+        <div class="loader"></div>
+    </div>
+    
+    <div class="age-gate-overlay" id="age-gate">
+        <div class="age-gate-box">
+            <h2 class="reveal">Are you of legal drinking age?</h2>
+            <p class="reveal" style="transition-delay: 0.1s;">You must be of legal age to enter this site.</p>
+            <div class="age-gate-buttons reveal" style="transition-delay: 0.2s;">
+                <button id="age-gate-yes" class="cta-button">Yes, I am</button>
+                <button id="age-gate-no" class="cta-button secondary">No, I am not</button>
+            </div>
+        </div>
+    </div>
+
+    <header>
+    </header>
+
+    <nav>
+        <div class="nav-content">
+            <a href="#" class="logo">Hope Liquor</a>
+
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#featured">Featured</a>
+                <a href="#promotions">Deals</a>
+                <a href="#contact">Contact</a>
+            </div>
+
+            <div class="header-contact">
+                <div class="contact-item">
+                    <i class="fa-regular fa-clock"></i>
+                    <span>Mon - Sat: 9am - 10pm</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <span>+1(753) 843-9309</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1 class="reveal">The Art of the Pour</h1>
+        <p class="reveal" style="transition-delay: 0.2s;">Discover a curated collection of fine spirits, world-class wines, and craft brews from Minnesota and beyond.</p>
+        <a href="#featured" class="cta-button reveal" style="transition-delay: 0.4s;">Explore The Collection</a>
+    </div>
+    
+    <main>
+        <section id="featured">
+            <h2 class="section-title reveal">Our Featured Selection</h2>
+            <p class="section-subtitle reveal">Hand-picked by our experts, these are the bottles we're most excited about right now.</p>
+            
+            <div class="swiper reveal">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><div class="product"><div class="product-image"><img src="images/image 2.jpg" alt="Whiskey Bottle"/></div><div class="product-info"><h3>Woodford Reserve</h3><p class="product-price">$45.99</p></div></div></div>
+                    <div class="swiper-slide"><div class="product"><div class="product-image"><img src="images/image wine.jpg" alt="Wine Bottle"/></div><div class="product-info"><h3>Caymus Cabernet</h3><p class="product-price">$89.99</p></div></div></div>
+                    <div class="swiper-slide"><div class="product"><div class="product-image"><img src="images/image tequila.jpg" alt="Tequila Bottle"/></div><div class="product-info"><h3>Clase Azul Reposado</h3><p class="product-price">$179.99</p></div></div></div>
+                    <div class="swiper-slide"><div class="product"><div class="product-image"><img src="images/image gin.jpg" alt="Gin Bottle"/></div><div class="product-info"><h3>Tattersall Gin</h3><p class="product-price">$29.99</p></div></div></div>
+                    <div class="swiper-slide"><div class="product"><div class="product-image"><img src="images/image beer (1).jpg" alt="Beer Cans"/></div><div class="product-info"><h3>Castle Danger Cream Ale</h3><p class="product-price">$11.99</p></div></div></div>
+                </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+        </section>
+
+        <section id="promotions">
+            <h2 class="section-title reveal">Weekly Promotions</h2>
+            <p class="section-subtitle reveal">Check out our weekly specials and save on your favorite spirits.</p>
+            
+            <div class="tabs-container reveal">
+                <button class="tab-button active" data-tab="monday">Monday Madness</button>
+                <button class="tab-button" data-tab="thursday">Thirsty Thursday</button>
+                <button class="tab-button" data-tab="weekend">Weekend Special</button>
+            </div>
+            
+            <div id="monday" class="tab-content active reveal">
+                <div class="promo-grid">
+                    <div class="promo-item">
+                        <img src="images/image whsky.jpg" alt="Whiskey" class="promo-image">
+                        <div>
+                            <h3>Whiskey Wednesdays</h3>
+                            <p>20% off all whiskey bottles every Monday.</p>
+                            <span class="validity">Valid every Monday</span>
+                        </div>
+                    </div>
+                    <div class="promo-item">
+                        <img src="https://images.unsplash.com/photo-1558160074-4d7d8bdf4256?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80" alt="Wine" class="promo-image">
+                        <div>
+                            <h3>Mix & Match</h3>
+                            <p>Buy any 3 bottles of wine and get 15% off.</p>
+                            <span class="validity">Monday only</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="thursday" class="tab-content reveal">
+                <div class="promo-grid">
+                    <div class="promo-item">
+                        <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80" alt="Tequila" class="promo-image">
+                        <div>
+                            <h3>Tequila Thursdays</h3>
+                            <p>$5 off all premium tequila bottles.</p>
+                            <span class="validity">Thursday special</span>
+                        </div>
+                    </div>
+                    <div class="promo-item">
+                        <img src="https://images.unsplash.com/photo-1612528443702-f6741f70a049?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80" alt="Beer" class="promo-image">
+                        <div>
+                            <h3>Craft Beer Craze</h3>
+                            <p>Buy one 6-pack, get one 50% off.</p>
+                            <span class="validity">Thursday only</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="weekend" class="tab-content reveal">
+                 <div class="promo-grid">
+                    <div class="promo-item">
+                        <img src="https://images.unsplash.com/photo-1535958636474-b021ee887b13?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80" alt="Wine" class="promo-image">
+                        <div>
+                            <h3>Weekend Wine Down</h3>
+                            <p>25% off all wine bottles over $20.</p>
+                            <span class="validity">Friday-Sunday</span>
+                        </div>
+                    </div>
+                    <div class="promo-item">
+                        <img src="images/image champagne (1).jpg" alt="Champagne" class="promo-image">
+                        <div>
+                            <h3>Champagne Special</h3>
+                            <p>$10 off all champagne bottles.</p>
+                            <span class="validity">Weekend only</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" style="background-color: #f9f9f9;">
+            <h2 class="section-title reveal">Visit Or Contact Us</h2>
+            <p class="section-subtitle reveal">We'd love to help you find your next favorite bottle.</p>
+
+            <div class="contact-grid reveal">
+                <div class="contact-box">
+                     <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80" alt="Hope Liquor Store Interior" class="store-image">
+                    <h3 style="font-size: 1.75rem; margin-bottom: 2rem;">Store Information</h3>
+                    <div class="contact-info-item">
+                        <i class="fa-solid fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Address</h4>
+                            <p>133 Willow Bend, Minnepolis, MN 55428</p>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <i class="fa-solid fa-phone"></i>
+                        <div>
+                            <h4>Phone</h4>
+                            <p>+1(763) 843-9309</p>
+                        </div>
+                    </div>
+                     <div class="contact-info-item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>info@hopeliquor.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <i class="fa-regular fa-clock"></i>
+                        <div>
+                            <h4>Hours</h4>
+                            <p>Mon - Sat: 9:00 AM - 10:00 PM <br> Sunday: Closed</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-box">
+                    <h3 style="font-size: 1.75rem; margin-bottom: 2rem;">Send Us a Message</h3>
+                    <form>
+                        <div class="form-group">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" id="name" name="name" class="form-control">
+                        </div>
+                         <div class="form-group">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" id="email" name="email" class="form-control">
+                        </div>
+                         <div class="form-group">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea id="message" name="message" rows="5" class="form-control"></textarea>
+                        </div>
+                        <button type="submit" class="cta-button">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-social">
+                <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+            </div>
+            <div class="footer-copyright">
+                &copy; 2025 Hope Liquor. All Rights Reserved. Please drink responsibly.
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Preloader
+            const preloader = document.querySelector('.preloader');
+            window.addEventListener('load', () => {
+                preloader.style.opacity = '0';
+                setTimeout(() => { preloader.style.display = 'none'; }, 500);
+            });
+
+            // Scroll-triggered Animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 }); 
+            
+            document.querySelectorAll('.reveal').forEach(el => {
+                if (!el.closest('.age-gate-overlay')) {
+                    observer.observe(el);
+                }
+            });
+
+            // Age Gate Logic
+            const ageGate = document.getElementById('age-gate');
+            const ageGateBox = document.querySelector('.age-gate-box');
+            const ageGateYes = document.getElementById('age-gate-yes');
+            const ageGateNo = document.getElementById('age-gate-no');
+
+            if (sessionStorage.getItem('ageVerified') === 'true') {
+                ageGate.style.display = 'none';
+            } else {
+                ageGate.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+            }
+
+            ageGateYes.addEventListener('click', () => {
+                ageGate.classList.add('hidden');
+                sessionStorage.setItem('ageVerified', 'true');
+            });
+
+            ageGateNo.addEventListener('click', () => {
+                ageGateBox.innerHTML = `
+                    <h2 class="reveal active">Access Denied</h2>
+                    <p class="reveal active" style="transition-delay: 0.1s;">You must be of legal drinking age to enter this site.</p>
+                `;
+            });
+
+            // Swiper Slider Initialization
+            const swiper = new Swiper('.swiper', {
+                loop: true,
+                slidesPerView: 1,
+                spaceBetween: 30,
+                pagination: { el: '.swiper-pagination', clickable: true },
+                navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+                breakpoints: {
+                    768: { slidesPerView: 2 },
+                    1024: { slidesPerView: 3 }
+                }
+            });
+
+            // Interactive Tabs Logic
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    button.classList.add('active');
+                    document.getElementById(button.dataset.tab).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
